@@ -26,8 +26,9 @@ module.exports = (app) => {
     });
 
     route.post((req, res) => {
+        //Validating post data:
+        if(!app.utils.validator.user(app, req, res)) return false;
 
-      
         db.insert(req.body,(err, user) => {
 
             if(err) {
@@ -59,6 +60,8 @@ module.exports = (app) => {
     });
 
     routeId.put((req ,res) => {
+        //Validating put data:
+        if(!app.utils.validator.user(app, req, res)) return false;
 
         db.update({_id:req.params.id},req.body,err => {
 
