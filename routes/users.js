@@ -8,8 +8,11 @@ module.exports = (app) => {
 
     let route = app.route('/users');
 
-    route.get((req, res) => {
+    route.get((req, res, next) => {
 
+        res.header("Access-Control-Allow-Origin", "*");
+        
+        
         db.find({}).sort({name: 1}).exec((err, users) => {
 
             if(err){
@@ -25,10 +28,12 @@ module.exports = (app) => {
         });
     });
 
-    route.post((req, res) => {
+    route.post((req, res, next) => {
         //Validating post data:
         if(!app.utils.validator.user(app, req, res)) return false;
-
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        
         db.insert(req.body,(err, user) => {
 
             if(err) {
@@ -43,8 +48,10 @@ module.exports = (app) => {
 
     let routeId = app.route('/users/:id');
 
-    routeId.get((req ,res) => {
-
+    routeId.get((req ,res, next) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+       
         db.findOne({_id:req.params.id}).exec((err,user) => {
 
             if(err){
@@ -59,7 +66,7 @@ module.exports = (app) => {
 
     });
 
-    routeId.put((req ,res) => {
+    routeId.put((req ,res, next) => {
         //Validating put data:
         if(!app.utils.validator.user(app, req, res)) return false;
 
